@@ -1,0 +1,28 @@
+{% extends "base.html" %}  <!-- Extending from the base.html template -->
+{% block title %}Sign Up{% endblock %}  <!-- Setting the title for this page -->
+
+{% block content %}  <!-- Starting the content block -->
+<!-- Sign-up form with a POST method -->
+<form method="POST"> 
+  <h3 align="center">Sign Up</h3>
+  <!-- Email input field -->
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" />
+  </div>
+  <!-- Password input field -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
+  </div>
+  <!-- Confirm password input field -->
+  <div class="form-group">
+    <label for="confirmpassword">Confirm password</label>
+    <input type="password" class="form-control" id="confirmpassword" name="confirmpassword"
+      placeholder="Confirm password" />
+  </div>
+  <br />
+  <!-- Submit button for submiting the sign-up form -->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}  <!-- Ending the content block -->

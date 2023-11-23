@@ -1,0 +1,73 @@
+{% extends "base.html" %}  <!-- Extending from a base HTML template -->
+{% block title %}Home{% endblock %}  <!-- Setting the title for this page -->
+
+{% block content %}  <!-- Starting the content block -->
+<h1 align="center">Notes</h1> <!-- Heading-->
+
+<ul class="list-group list-group-flush" id="notes"> <!-- Displaying a list of notes -->
+  {% for note in user.notes %}  <!-- Iterating through each note in the user's notes -->
+  <li class="list-group-item">
+    {{ note.data }}  <!-- Displaying the content of the note -->
+    <!-- Button for deleting notes -->
+    <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!-- Button for editing notes -->
+    <button type="button" class="update" onClick="showUpdateForm({{ note.id }}, '{{ note.data }}')">
+      Update
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+
+<!-- Form for editing notes when button is clicked -->
+<div id="updateFormContainer" style="display: none;">
+  <form id="updateForm" onsubmit="updateNote(); return false;">
+    <label for="updatedNote">Update Note:</label>
+    <textarea name="updatedNote" id="updatedNote" class="form-control"></textarea>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+
+<!-- Form for adding a new note when button is clicked -->
+<form method="POST">
+  <textarea name="note" id="note" class="form-control"></textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Add Note</button>
+  </div>
+</form>
+
+<!-- JavaScript section for handling UI interactions -->
+<script> // JavaScript section for handling UI interactions
+  // Function for displaying the update form with the selected note's data
+  function showUpdateForm(noteId, noteData) {
+    document.getElementById("updatedNote").value = noteData;
+    document.getElementById("updateForm").onsubmit = function() {
+      updateNote(noteId);  // Calls the updateNote function with the note ID
+      return false;
+    };
+    document.getElementById("updateFormContainer").style.display = "block";
+  }
+
+  // Function for hiding the update form
+  function hideUpdateForm() {
+    document.getElementById("updateFormContainer").style.display = "none";
+  }
+
+  // Function for updating a note
+  function updateNote(noteId) {
+    var updatedNote = document.getElementById("updatedNote").value;
+    
+    // Sends a POST request to "/update-note" with the note ID and updated data
+    fetch("/update-note", {
+      method: "POST",
+      body: JSON.stringify({ noteId: noteId, newData: updatedNote }),
+    }).then((_res) => {
+      window.location.href = "/";  // Redirecting to the home page after updating
+      hideUpdateForm();  // Hide the update form
+    });
+  }
+</script>
+
+{% endblock %}  <!-- Ending the content block -->
